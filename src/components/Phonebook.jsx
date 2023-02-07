@@ -18,9 +18,11 @@ export default class Phonebook extends Component {
     filter: '',
   };
 
-  componentDidMount(prevProps, prevState) {
+  componentDidMount() {
     const savedContacts = JSON.parse(localStorage.getItem(CONTACTS_LS_KEY));
-    this.setState({ contacts: savedContacts });
+    if (savedContacts) {
+      this.setState({ contacts: savedContacts });
+    }
   }
 
   componentDidUpdate(_, prevState) {
