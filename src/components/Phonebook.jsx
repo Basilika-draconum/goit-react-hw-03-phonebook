@@ -5,6 +5,8 @@ import ContactsList from './ContactsList/ContactsList';
 import Filter from './Filter/Filter';
 import css from './phonebook.module.scss';
 
+const CONTACTS_LS_KEY = 'contactsList';
+
 export default class Phonebook extends Component {
   state = {
     contacts: [
@@ -15,6 +17,20 @@ export default class Phonebook extends Component {
     ],
     filter: '',
   };
+
+  componentDidMount(prevProps, prevState) {
+    const savedContacts = JSON.parse(localStorage.getItem(CONTACTS_LS_KEY));
+    this.setState({ contacts: savedContacts });
+  }
+
+  componentDidUpdate(_, prevState) {
+    if (prevState.contacts.length !== this.state.contacts.length) {
+      localStorage.setItem(
+        CONTACTS_LS_KEY,
+        JSON.stringify(this.state.contacts)
+      );
+    }
+  }
 
   deleteUser = id => {
     this.setState(prevState => ({
